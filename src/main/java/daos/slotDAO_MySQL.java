@@ -1,6 +1,5 @@
 package daos;
 
-import model.Producte;
 import model.Slot;
 
 import java.sql.*;
@@ -13,7 +12,7 @@ public class slotDAO_MySQL implements slotDAO{
     private static final String DB_ROUTE = "jdbc:mysql://localhost:3306/expenedora";
     private static final String DB_USER = "root";
     private static final String DB_PWD = "1234";
-
+    private static final ArrayList<Slot> llistaSlots = new ArrayList<>();
     private Connection conn = null;
 
     public slotDAO_MySQL()
@@ -38,11 +37,11 @@ public class slotDAO_MySQL implements slotDAO{
         ps.setString(3,s.getCodi_producte());
         int rowCount = ps.executeUpdate();
     }
-
+/*
     @Override
     public Slot readSlot() throws SQLException {
         return null;
-    }
+    }*/
 
     @Override
     public ArrayList<Slot> readSlot() throws SQLException {

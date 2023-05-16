@@ -43,14 +43,58 @@ public class Application {
 
 
     private static void modificarMaquina() {
-
-
         /**
          * Ha de permetre:
          *      - modificar les posicions on hi ha els productes de la màquina (quin article va a cada lloc)
          *      - modificar stock d'un producte que hi ha a la màquina
          *      - afegir més ranures a la màquina
          */
+
+        Scanner lector = new Scanner(System.in);
+        int opcio = 0;
+
+        do {
+            mostrarMenuModificacioMaquina();
+            opcio = lector.nextInt();
+
+            switch (opcio) {
+                case 1:
+                    modificarPosicioProducte();
+                    break;
+                case 2:
+                    modificarStockProducte();
+                    break;
+                case 3:
+                    afegirRanures();
+                    break;
+                case 0:
+                    System.out.println("Tornant al menú principal...");
+                    break;
+                default:
+                    System.out.println("Opció no vàlida");
+            }
+        } while (opcio != 0);
+    }
+
+    private static void mostrarMenuModificacioMaquina() {
+        System.out.println("\nMenú de modificació de la màquina");
+        System.out.println("=================================");
+        System.out.println("[1] Modificar posició del producte");
+        System.out.println("[2] Modificar stock del producte");
+        System.out.println("[3] Afegir ranures");
+        System.out.println("[0] Tornar al menú principal");
+    }
+
+    private static void modificarPosicioProducte() {
+
+    }
+
+    private static void modificarStockProducte() {
+
+    }
+
+    private static void afegirRanures() {
+
     }
 
     private static void afegirProductes() {

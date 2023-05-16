@@ -24,18 +24,15 @@ public class Application {
             mostrarMenu();
             opcio = lector.nextInt();
 
-            switch (opcio)
-            {
-                case 1:     mostrarMaquina();       break;
-                case 2:     comprarProducte();      break;
-
-                case 10:    mostrarInventari();     break;
-                case 11:    afegirProductes();      break;
-                case 12:    modificarMaquina();     break;
-                case 13:    mostrarBenefici();      break;
-
-                case -1:    System.out.println("Bye...");           break;
-                default:    System.out.println("Opció no vàlida");
+            switch (opcio) {
+                case 1 -> mostrarMaquina();
+                case 2 -> comprarProducte();
+                case 10 -> mostrarInventari();
+                case 11 -> afegirProductes();
+                case 12 -> modificarMaquina();
+                case 13 -> mostrarBenefici();
+                case -1 -> System.out.println("Bye...");
+                default -> System.out.println("Opció no vàlida");
             }
 
         }while(opcio != -1);
@@ -59,20 +56,11 @@ public class Application {
             opcio = lector.nextInt();
 
             switch (opcio) {
-                case 1:
-                    modificarPosicioProducte();
-                    break;
-                case 2:
-                    modificarStockProducte();
-                    break;
-                case 3:
-                    afegirRanures();
-                    break;
-                case 0:
-                    System.out.println("Tornant al menú principal...");
-                    break;
-                default:
-                    System.out.println("Opció no vàlida");
+                case 1 -> modificarPosicioProducte();
+                case 2 -> modificarStockProducte();
+                case 3 -> afegirRanures();
+                case 0 -> System.out.println("Tornant al menú principal...");
+                default -> System.out.println("Opció no vàlida");
             }
         } while (opcio != 0);
     }

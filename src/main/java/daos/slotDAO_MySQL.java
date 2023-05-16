@@ -1,6 +1,5 @@
 package daos;
 
-import model.Producte;
 import model.Slot;
 
 import java.sql.*;
@@ -39,14 +38,14 @@ public class slotDAO_MySQL implements slotDAO{
         int rowCount = ps.executeUpdate();
     }
 
-    @Override
+ /*   @Override
     public Slot readSlot() throws SQLException {
         return null;
-    }
+    }*/
 
     @Override
     public ArrayList<Slot> readSlot() throws SQLException {
-        ArrayList<Slot> llistaProductes = new ArrayList<Slot>();
+        ArrayList<Slot> llistaSlots = new ArrayList<Slot>();
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM slot");
 
         ResultSet rs = ps.executeQuery();

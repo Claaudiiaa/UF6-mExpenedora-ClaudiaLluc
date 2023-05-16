@@ -37,15 +37,20 @@ public class slotDAO_MySQL implements slotDAO{
         ps.setString(3,s.getCodi_producte());
         int rowCount = ps.executeUpdate();
     }
+<<<<<<< HEAD
 /*
     @Override
+=======
+
+ /*   @Override
+>>>>>>> a7fc59bf6f57d6b9e8cc853dd0a1c4c0d05c83b2
     public Slot readSlot() throws SQLException {
         return null;
     }*/
 
     @Override
     public ArrayList<Slot> readSlot() throws SQLException {
-        ArrayList<Slot> llistaProductes = new ArrayList<Slot>();
+        ArrayList<Slot> llistaSlots = new ArrayList<Slot>();
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM slot");
 
         ResultSet rs = ps.executeQuery();

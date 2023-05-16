@@ -56,7 +56,6 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         while(rs.next())
         {
             Producte p = new Producte();
-
             /**
             p.setCodiProducte(rs.getString(codi_producte));
             p.setNom(rs.getString(nom));

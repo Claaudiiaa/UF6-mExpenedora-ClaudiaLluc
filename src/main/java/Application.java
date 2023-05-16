@@ -1,3 +1,4 @@
+import daos.DAOFactory;
 import daos.ProducteDAO;
 import daos.ProducteDAO_MySQL;
 import model.Producte;
@@ -11,11 +12,11 @@ public class Application {
     //Passar al DAO -->     //TODO: llegir les propietats de la BD d'un fitxer de configuració (Properties)
     //En general -->        //TODO: Afegir un sistema de Logging per les classes.
 
-    private static ProducteDAO producteDAO = new ProducteDAO_MySQL();            //TODO: passar a una classe DAOFactory
-
+    private static ProducteDAO producteDAO = new ProducteDAO_MySQL();   //TODO: passar a una classe DAOFactory
+    private static DAOFactory df = DAOFactory.getInstance();
     public static void main(String[] args) {
 
-        Scanner lector = new Scanner(System.in);            //TODO: passar Scanner a una classe InputHelper
+        Scanner lector = new Scanner(System.in);     //TODO: passar Scanner a una classe InputHelper
         int opcio = 0;
 
         do
@@ -43,8 +44,6 @@ public class Application {
 
 
     private static void modificarMaquina() {
-
-
         /**
          * Ha de permetre:
          *      - modificar les posicions on hi ha els productes de la màquina (quin article va a cada lloc)
@@ -54,7 +53,6 @@ public class Application {
     }
 
     private static void afegirProductes() {
-
         /**
          *      Crear un nou producte amb les dades que ens digui l'operari
          *      Agefir el producte a la BD (tenir en compte les diferents situacions que poden passar)
@@ -107,7 +105,8 @@ public class Application {
     }
 
     private static void comprarProducte() {
-
+        mostrarMaquina();
+        //Comprovar que hi hagi productes en stock
         /**
          * Mínim: es realitza la compra indicant la posició on es troba el producte que es vol comprar
          * Ampliació (0.5 punts): es permet entrar el NOM del producte per seleccionar-lo (abans cal mostrar els
@@ -120,7 +119,9 @@ public class Application {
     }
 
     private static void mostrarMaquina() {
-
+        System.out.printf("""
+                
+                """);
         /** IMPORTANT **
          * S'està demanat NOM DEL PRODUCTE no el codiProducte (la taula Slot conté posició, codiProducte i stock)
          * també s'acceptarà mostrant només el codi producte, però comptarà menys.

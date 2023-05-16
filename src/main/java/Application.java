@@ -41,7 +41,6 @@ public class Application {
 
     }
 
-
     private static void modificarMaquina() {
         /**
          * Ha de permetre:

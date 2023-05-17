@@ -11,7 +11,7 @@ public class slotDAO_MySQL implements slotDAO{
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_ROUTE = "jdbc:mysql://localhost:3306/expenedora";
     private static final String DB_USER = "root";
-    private static final String DB_PWD = "1234";
+    private static final String DB_PWD = "7304";
     private Connection conn = null;
 
     public slotDAO_MySQL()
@@ -46,7 +46,6 @@ public class slotDAO_MySQL implements slotDAO{
     public ArrayList<Slot> readSlot() throws SQLException {
         ArrayList<Slot> llistaSlots = new ArrayList<Slot>();
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM slot");
-
         ResultSet rs = ps.executeQuery();
         while(rs.next())
         {
@@ -61,6 +60,8 @@ public class slotDAO_MySQL implements slotDAO{
 
         return llistaSlots;
     }
+
+
 
     @Override
     public void updateSlot(Slot s) throws SQLException {

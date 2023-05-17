@@ -1,7 +1,6 @@
-import daos.DAOFactory;
-import daos.ProducteDAO;
-import daos.ProducteDAO_MySQL;
+import daos.*;
 import model.Producte;
+import model.Slot;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,9 +12,10 @@ public class Application {
     //En general -->        //TODO: Afegir un sistema de Logging per les classes.
 
     private static ProducteDAO producteDAO = new ProducteDAO_MySQL();   //TODO: passar a una classe DAOFactory
+    private static slotDAO slotDao = new slotDAO_MySQL();
     private static DAOFactory df = DAOFactory.getInstance();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         Scanner lector = new Scanner(System.in);     //TODO: passar Scanner a una classe InputHelper
         int opcio = 0;
@@ -145,6 +145,9 @@ public class Application {
 
     }
 
+    private static void comprovarSiExisteix(String codiProducte) {
+    }
+
     private static void mostrarInventari() {
 
         try {
@@ -159,9 +162,10 @@ public class Application {
         }
     }
 
-    private static void comprarProducte() {
+    private static void comprarProducte() throws SQLException {
         mostrarMaquina();
         //Comprovar que hi hagi productes en stock
+
         /**
          * Mínim: es realitza la compra indicant la posició on es troba el producte que es vol comprar
          * Ampliació (0.5 punts): es permet entrar el NOM del producte per seleccionar-lo (abans cal mostrar els
@@ -173,28 +177,36 @@ public class Application {
 
     }
 
-    private static void mostrarMaquina() {
-        System.out.printf("""
-                                
+    /**
+     * Mètode per mostrar els slots amb el nom del producte
+     * @throws SQLException
+     */
+    private static void mostrarMaquina() throws SQLException {
+        ArrayList<Slot> llistaSlots = slotDao.readSlot();
+        ArrayList<Producte> llistaProductes = producteDAO.readProductes();
+        System.out.print("""
+                Posicio      Producte                Quantitat disponible
+                ===========================================================
                 """);
-        /** IMPORTANT **
-         * S'està demanat NOM DEL PRODUCTE no el codiProducte (la taula Slot conté posició, codiProducte i stock)
-         * també s'acceptarà mostrant només el codi producte, però comptarà menys.
-         *
-         * Posicio      Producte                Quantitat disponible
-         * ===========================================================
-         * 1            Patates 3D              8
-         * 2            Doritos Tex Mex         6
-         * 3            Coca-Cola Zero          10
-         * 4            Aigua 0.5L              7
-         */
+        for (Slot s : llistaSlots){
+            System.out.printf("%-13s", s.getPosicio());
+            for (Producte p :llistaProductes){
+                if(p.getCodiProducte().equals(s.getCodi_producte())){
+                    System.out.printf("%-25s", p.getNom());
+                }
+            }
+            System.out.printf("%d\n", s.getQuantitat());
+        }
+
     }
 
+    /**
+     * Mètode per mostrar el menú principal de l'aplicació
+     */
     private static void mostrarMenu() {
         System.out.println("\nMenú de la màquina expenedora");
         System.out.println("=============================");
         System.out.println("Selecciona la operació a realitzar introduïnt el número corresponent: \n");
-
 
         //Opcions per client / usuari
         System.out.println("[1] Mostrar Posició / Nom producte / Stock de la màquina");

@@ -12,7 +12,6 @@ public class slotDAO_MySQL implements slotDAO{
     private static final String DB_ROUTE = "jdbc:mysql://localhost:3306/expenedora";
     private static final String DB_USER = "root";
     private static final String DB_PWD = "1234";
-    private static final ArrayList<Slot> llistaSlots = new ArrayList<>();
     private Connection conn = null;
 
     public slotDAO_MySQL()
@@ -52,13 +51,6 @@ public class slotDAO_MySQL implements slotDAO{
         while(rs.next())
         {
             Slot s = new Slot();
-            /**
-             p.setCodiProducte(rs.getString(codi_producte));
-             p.setNom(rs.getString(nom));
-             p.setDescripcio(rs.getString(descripcio));
-             p.setPreuCompra(rs.getFloat(preu_compra));
-             p.setPreuVenta(rs.getFloat(preu_venta));
-             **/
 
             s.setPosicio(rs.getInt(1));
             s.setQuantitat(rs.getInt(2));
@@ -81,7 +73,7 @@ public class slotDAO_MySQL implements slotDAO{
     }
 
     @Override
-    public void deleteSlot(String codiSlot) throws SQLException {
+    public void deleteSlot(int posicio) throws SQLException {
 
     }
 }

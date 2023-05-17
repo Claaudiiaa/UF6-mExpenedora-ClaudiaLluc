@@ -100,53 +100,72 @@ public class Application {
          *
          *     Podeu fer-ho amb llenguatge SQL o mirant si el producte existeix i després inserir o actualitzar
          */
-        String continuar = null;
-        Producte p;
-        do {
-            p = new Producte();
-            System.out.print("Codi: ");
-            String codiProducte = lector.nextLine();
-            comprovarSiExisteix(codiProducte);
-            p.setCodiProducte(codiProducte);
-            System.out.print("Nom: ");
-            p.setNom(lector.nextLine());
-            System.out.print("Descripcio: ");
-            p.setDescripcio(lector.nextLine());
-            System.out.print("Preu Compra: ");
-            p.setPreuCompra(Float.parseFloat(lector.nextLine()));
-            System.out.print("Preu Venta: ");
-            p.setPreuVenta(Float.parseFloat(lector.nextLine()));
-            System.out.print("Vols continuar introduint productes? (s/n)");
-            continuar = lector.nextLine();
-
-        } while (continuar.equalsIgnoreCase("s"));
-
-
-        //Exemple de insersió SENSE ENTRADA DE DADES NI COMPROVACIÓ REPETITS
-/*
-        Producte p = new Producte("pomaP", "Pink Lady", "Poma Pink Lady envasada",
-                0.2f, 1.0f);*/
+            String continuar = null;
+            Producte p;
+            do {
+                p = new Producte();
+                System.out.print("Codi: ");
+                String codiProducte = lector.nextLine();
+                if (comprovarSiExisteix(codiProducte)) {
+                    System.out.println("El producte ja existeix amb el mateix codi.");
+                    System.out.print("Vols actualitzar el producte? (s/n): ");
+                    String resposta = lector.nextLine();
+                    if (resposta.equalsIgnoreCase("s")) {
+                        // Actualitzar el producte existent
+                    } else {
+                        // Descartar l'operació
+                    }
+                } else {
+                    p.setCodiProducte(codiProducte);
+                    System.out.print("Nom: ");
+                    p.setNom(lector.nextLine());
+                    System.out.print("Descripcio: ");
+                    p.setDescripcio(lector.nextLine());
+                    System.out.print("Preu Compra: ");
+                    p.setPreuCompra(Float.parseFloat(lector.nextLine()));
+                    System.out.print("Preu Venta: ");
+                    p.setPreuVenta(Float.parseFloat(lector.nextLine()));
+                    try {
+                        // Demanem de guardar el producte p a la BD
+                        producteDAO.createProducte(p);
+                        // Agafem tots els productes de la BD i els mostrem (per comprovar que s'ha afegit)
+                        ArrayList<Producte> productes = producteDAO.readProductes();
+                        for (Producte prod : productes) {
+                            System.out.println(prod);
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        System.out.println(e.getErrorCode());
+                    }
+                }
+                System.out.print("Vols continuar introduint productes? (s/n): ");
+                continuar = lector.nextLine();
+            } while (continuar.equalsIgnoreCase("s"));
+        }
+    private static boolean comprovarSiExisteix(String codiProducte) {
 
         try {
+            // Consultar la base de dades per comprovar si el producte existeix
+            Producte producte = producteDAO.readProducte(codiProducte);
 
-            //Demanem de guardar el producte p a la BD
-            producteDAO.createProducte(p);
-
-            //Agafem tots els productes de la BD i els mostrem (per compvoar que s'ha afegit)
-            ArrayList<Producte> productes = producteDAO.readProductes();
-            for (Producte prod : productes) {
-                System.out.println(prod);
+            if (producte != null) {
+                // El producte existeix
+                return true;
+            } else {
+                // El producte no existeix
+                return false;
             }
-
-        } catch (SQLException e) {          //TODO: tractar les excepcions
+        } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println(e.getErrorCode());
+            return false;
         }
-
     }
 
+<<<<<<< HEAD
     private static void comprovarSiExisteix(String codiProducte) {
     }
+=======
+>>>>>>> d003c790460968e5e8c4d192778b995baaa7dc06
 
     private static void mostrarInventari() {
 

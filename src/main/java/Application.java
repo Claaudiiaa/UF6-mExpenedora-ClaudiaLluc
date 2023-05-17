@@ -14,13 +14,13 @@ public class Application {
 
     private static ProducteDAO producteDAO = new ProducteDAO_MySQL();   //TODO: passar a una classe DAOFactory
     private static DAOFactory df = DAOFactory.getInstance();
+
     public static void main(String[] args) {
 
         Scanner lector = new Scanner(System.in);     //TODO: passar Scanner a una classe InputHelper
         int opcio = 0;
 
-        do
-        {
+        do {
             mostrarMenu();
             opcio = lector.nextInt();
 
@@ -28,14 +28,14 @@ public class Application {
                 case 1 -> mostrarMaquina();
                 case 2 -> comprarProducte();
                 case 10 -> mostrarInventari();
-                case 11 -> afegirProductes();
+                case 11 -> afegirProductes(lector);
                 case 12 -> modificarMaquina();
                 case 13 -> mostrarBenefici();
                 case -1 -> System.out.println("Bye...");
                 default -> System.out.println("Opció no vàlida");
             }
 
-        }while(opcio != -1);
+        } while (opcio != -1);
 
     }
 
@@ -65,12 +65,14 @@ public class Application {
     }
 
     private static void mostrarMenuModificacioMaquina() {
-        System.out.println("\nMenú de modificació de la màquina");
-        System.out.println("=================================");
-        System.out.println("[1] Modificar posició del producte");
-        System.out.println("[2] Modificar stock del producte");
-        System.out.println("[3] Afegir ranures");
-        System.out.println("[0] Tornar al menú principal");
+        System.out.print("""
+                Menú de modificació de la màquina
+                =================================
+                [1] Modificar posició del producte
+                [2] Modificar stock del producte
+                [3] Afegir ranures
+                [0] Tornar al menú principal
+                """);
     }
 
     private static void modificarPosicioProducte() {
@@ -85,7 +87,8 @@ public class Application {
 
     }
 
-    private static void afegirProductes() {
+    private static void afegirProductes(Scanner lector) {
+
         /**
          *      Crear un nou producte amb les dades que ens digui l'operari
          *      Agefir el producte a la BD (tenir en compte les diferents situacions que poden passar)
@@ -97,11 +100,30 @@ public class Application {
          *
          *     Podeu fer-ho amb llenguatge SQL o mirant si el producte existeix i després inserir o actualitzar
          */
+        String continuar = null;
+        Producte p;
+        do {
+            p = new Producte();
+            System.out.print("Codi: ");
+            p.setCodiProducte(lector.nextLine());
+            System.out.print("Nom: ");
+            p.setNom(lector.nextLine());
+            System.out.print("Descripcio: ");
+            p.setDescripcio(lector.nextLine());
+            System.out.print("Preu Compra: ");
+            p.setPreuCompra(Float.parseFloat(lector.nextLine()));
+            System.out.print("Preu Venta: ");
+            p.setPreuVenta(Float.parseFloat(lector.nextLine()));
+            System.out.print("Vols continuar introduint productes? (s/n)");
+            continuar = lector.nextLine();
+
+        } while (continuar.equalsIgnoreCase("s"));
+
 
         //Exemple de insersió SENSE ENTRADA DE DADES NI COMPROVACIÓ REPETITS
-
+/*
         Producte p = new Producte("pomaP", "Pink Lady", "Poma Pink Lady envasada",
-                0.2f, 1.0f);
+                0.2f, 1.0f);*/
 
         try {
 
@@ -110,8 +132,7 @@ public class Application {
 
             //Agafem tots els productes de la BD i els mostrem (per compvoar que s'ha afegit)
             ArrayList<Producte> productes = producteDAO.readProductes();
-            for (Producte prod: productes)
-            {
+            for (Producte prod : productes) {
                 System.out.println(prod);
             }
 
@@ -127,8 +148,7 @@ public class Application {
         try {
             //Agafem tots els productes de la BD i els mostrem
             ArrayList<Producte> productes = producteDAO.readProductes();
-            for (Producte prod: productes)
-            {
+            for (Producte prod : productes) {
                 System.out.println(prod);
             }
 
@@ -153,7 +173,7 @@ public class Application {
 
     private static void mostrarMaquina() {
         System.out.printf("""
-                
+                                
                 """);
         /** IMPORTANT **
          * S'està demanat NOM DEL PRODUCTE no el codiProducte (la taula Slot conté posició, codiProducte i stock)

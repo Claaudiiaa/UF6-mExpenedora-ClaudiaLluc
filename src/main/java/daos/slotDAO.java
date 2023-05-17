@@ -10,6 +10,6 @@ public interface slotDAO {
     public ArrayList<Slot> readSlot() throws SQLException;
     public void updateSlot(Slot s) throws SQLException;
     public void deleteSlot(Slot s) throws SQLException;
-    public void deleteSlot(String codiSlot) throws  SQLException;
+    public void deleteSlot(int posicio) throws  SQLException;
 
 }

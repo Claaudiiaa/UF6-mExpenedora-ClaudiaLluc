@@ -87,7 +87,7 @@ public class ProducteDAO_MySQL implements ProducteDAO {
     }
 
     @Override
-    public void deleteProducte(String codiProducte) throws SQLException {
+    public void deleteProducte(int posicio) throws SQLException {
 
     }
 }

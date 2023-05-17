@@ -19,6 +19,6 @@ public interface ProducteDAO {
 
     public void deleteProducte(Producte p) throws SQLException;
 
-    public void deleteProducte(String codiProducte) throws SQLException;
+    public void deleteProducte(int posicio) throws SQLException;
 
 }

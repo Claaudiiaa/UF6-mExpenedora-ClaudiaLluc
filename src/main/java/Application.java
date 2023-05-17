@@ -104,14 +104,18 @@ public class Application {
         Producte p;
         do {
             p = new Producte();
+            System.out.print("Codi: ");
             p.setCodiProducte(lector.nextLine());
-
-                p.setNom(lector.nextLine());
-                p.setDescripcio(lector.nextLine());
-                p.setPreuCompra(Float.parseFloat(lector.nextLine()));
-                p.setPreuVenta(Float.parseFloat(lector.nextLine()));
-                System.out.print("Vols continuar introduint productes? (s/n)");
-                continuar = lector.nextLine();
+            System.out.print("Nom: ");
+            p.setNom(lector.nextLine());
+            System.out.print("Descripcio: ");
+            p.setDescripcio(lector.nextLine());
+            System.out.print("Preu Compra: ");
+            p.setPreuCompra(Float.parseFloat(lector.nextLine()));
+            System.out.print("Preu Venta: ");
+            p.setPreuVenta(Float.parseFloat(lector.nextLine()));
+            System.out.print("Vols continuar introduint productes? (s/n)");
+            continuar = lector.nextLine();
 
         } while (continuar.equalsIgnoreCase("s"));
 

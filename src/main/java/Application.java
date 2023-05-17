@@ -22,7 +22,7 @@ public class Application {
 
         do {
             mostrarMenu();
-            opcio = lector.nextInt();
+            opcio = Integer.parseInt(lector.nextLine());
 
             switch (opcio) {
                 case 1 -> mostrarMaquina();
@@ -52,7 +52,7 @@ public class Application {
 
         do {
             mostrarMenuModificacioMaquina();
-            opcio = lector.nextInt();
+            opcio = Integer.parseInt(lector.nextLine());
 
             switch (opcio) {
                 case 1 -> modificarPosicioProducte();
@@ -105,7 +105,9 @@ public class Application {
         do {
             p = new Producte();
             System.out.print("Codi: ");
-            p.setCodiProducte(lector.nextLine());
+            String codiProducte = lector.nextLine();
+            comprovarSiExisteix(codiProducte);
+            p.setCodiProducte(codiProducte);
             System.out.print("Nom: ");
             p.setNom(lector.nextLine());
             System.out.print("Descripcio: ");

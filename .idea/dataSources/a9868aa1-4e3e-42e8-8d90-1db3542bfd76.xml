@@ -1029,6 +1029,8 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Host>localhost</Host>
       <Plugin>caching_sha2_password</Plugin>
     </user>
+<<<<<<< HEAD
+=======
     <table id="297" parent="288" name="producte">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
@@ -1101,5 +1103,6 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
+>>>>>>> 9ca1b0e48ce2ddbd7c0d0e1e989e3f14913814f2
   </database-model>
 </dataSource>

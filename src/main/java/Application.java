@@ -2,6 +2,7 @@ import daos.*;
 import model.Producte;
 import model.Slot;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -87,6 +88,10 @@ public class Application {
 
     }
 
+    /**
+     * Mètode per afegir productes a la base de dades
+     * @param lector Scanner
+     */
     private static void afegirProductes(Scanner lector) {
 
         /**
@@ -100,48 +105,55 @@ public class Application {
          *
          *     Podeu fer-ho amb llenguatge SQL o mirant si el producte existeix i després inserir o actualitzar
          */
-         /*   String continuar = null;
-            Producte p;
-            do {
-                p = new Producte();
-                System.out.print("Codi: ");
-                String codiProducte = lector.nextLine();
-                if (comprovarSiExisteix(codiProducte)) {
-                    System.out.println("El producte ja existeix amb el mateix codi.");
-                    System.out.print("Vols actualitzar el producte? (s/n): ");
-                    String resposta = lector.nextLine();
-                    if (resposta.equalsIgnoreCase("s")) {
-                        // Actualitzar el producte existent
-                    } else {
-                        // Descartar l'operació
-                    }
+        String continuar = null;
+        Producte p;
+        do {
+            p = new Producte();
+            System.out.print("Codi: ");
+            String codiProducte = lector.nextLine();
+            if (comprovarSiExisteix(codiProducte)) {
+                System.out.println("El producte ja existeix amb el mateix codi.");
+                System.out.print("Vols actualitzar el producte? (s/n): ");
+                String resposta = lector.nextLine();
+                if (resposta.equalsIgnoreCase("s")) {
+                    // Actualitzar el producte existent
                 } else {
-                    p.setCodiProducte(codiProducte);
-                    System.out.print("Nom: ");
-                    p.setNom(lector.nextLine());
-                    System.out.print("Descripcio: ");
-                    p.setDescripcio(lector.nextLine());
-                    System.out.print("Preu Compra: ");
-                    p.setPreuCompra(Float.parseFloat(lector.nextLine()));
-                    System.out.print("Preu Venta: ");
-                    p.setPreuVenta(Float.parseFloat(lector.nextLine()));
-                    try {
-                        // Demanem de guardar el producte p a la BD
-                        producteDAO.createProducte(p);
-                        // Agafem tots els productes de la BD i els mostrem (per comprovar que s'ha afegit)
-                        ArrayList<Producte> productes = producteDAO.readProductes();
-                        for (Producte prod : productes) {
-                            System.out.println(prod);
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        System.out.println(e.getErrorCode());
-                    }
+                    // Descartar l'operació
+                    break;
                 }
-                System.out.print("Vols continuar introduint productes? (s/n): ");
-                continuar = lector.nextLine();
-            } while (continuar.equalsIgnoreCase("s"));
-        */}
+            } else {
+                p.setCodiProducte(codiProducte);
+                System.out.print("Nom: ");
+                p.setNom(lector.nextLine());
+                System.out.print("Descripcio: ");
+                p.setDescripcio(lector.nextLine());
+                System.out.print("Preu Compra: ");
+                p.setPreuCompra(Float.parseFloat(lector.nextLine()));
+                System.out.print("Preu Venta: ");
+                p.setPreuVenta(Float.parseFloat(lector.nextLine()));
+                try {
+                    // Demanem de guardar el producte p a la BD
+                    producteDAO.createProducte(p);
+                    // Agafem tots els productes de la BD i els mostrem (per comprovar que s'ha afegit)
+                    ArrayList<Producte> productes = producteDAO.readProductes();
+                    for (Producte prod : productes) {
+                        System.out.println(prod);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    System.out.println(e.getErrorCode());
+                }
+            }
+            System.out.print("Vols continuar introduint productes? (s/n): ");
+            continuar = lector.nextLine();
+        } while (continuar.equalsIgnoreCase("s"));
+    }
+
+    /**
+     * Mètode per comprovar si el producte existeix o no
+     * @param codiProducte Codi introduit per l'usuari
+     * @return true si el codi existeix i false si el codi no existeix
+     */
     private static boolean comprovarSiExisteix(String codiProducte) {
 
         try {
@@ -161,6 +173,9 @@ public class Application {
         }
     }
 
+    /**
+     * Mètode per mostrar l'inventari de la màquina expenedora
+     */
     private static void mostrarInventari() {
 
         try {
@@ -174,6 +189,7 @@ public class Application {
             e.printStackTrace();
         }
     }
+
 
     private static void comprarProducte() throws SQLException {
         //mostrarProductesDisponibles();
@@ -190,27 +206,11 @@ public class Application {
 
     }
 
-    private static void mostrarProductesDisponibles(Scanner lector) throws SQLException {
-        /*int posicio = Integer.parseInt(lector.nextLine());
-        ArrayList<Slot> llistaSlots = slotDao.readSlot();
-        ArrayList<Producte> llistaProductes = producteDAO.readProductes();
-        System.out.print("""
-                Posicio      Producte                Quantitat disponible
-                ===========================================================
-                """);
-        for (Slot s : llistaSlots){
-            System.out.printf("%-13s", s.getPosicio());
-            for (Producte p :llistaProductes){
-                if(p.getCodiProducte().equals(s.getCodi_producte())){
-                    System.out.printf("%-25s", p.getNom());
-                }
-            }
-            System.out.printf("%d\n", s.getQuantitat());
-        }*/
-    }
+
 
     /**
      * Mètode per mostrar els slots amb el nom del producte
+     *
      * @throws SQLException
      */
     private static void mostrarMaquina() throws SQLException {
@@ -220,10 +220,10 @@ public class Application {
                 Posicio      Producte                Quantitat disponible
                 ===========================================================
                 """);
-        for (Slot s : llistaSlots){
+        for (Slot s : llistaSlots) {
             System.out.printf("%-13s", s.getPosicio());
-            for (Producte p :llistaProductes){
-                if(p.getCodiProducte().equals(s.getCodi_producte())){
+            for (Producte p : llistaProductes) {
+                if (p.getCodiProducte().equals(s.getCodi_producte())) {
                     System.out.printf("%-25s", p.getNom());
                 }
             }

@@ -4,14 +4,12 @@ import model.Producte;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public interface ProducteDAO {
 
     public void createProducte(Producte p) throws SQLException;
 
-    public Producte readProducte() throws SQLException;
+    public Producte readProducte(String codiProducte) throws SQLException;
 
     public ArrayList<Producte> readProductes() throws SQLException;
 

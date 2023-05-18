@@ -14,22 +14,22 @@ public class Application {
 
     private static ProducteDAO producteDAO = new ProducteDAO_MySQL();   //TODO: passar a una classe DAOFactory
     private static slotDAO slotDao = new slotDAO_MySQL();
-    private static DAOFactory df = DAOFactory.getInstance();
+
+    static inputHelper input = new inputHelper();
 
     public static void main(String[] args) throws SQLException {
 
-        Scanner lector = new Scanner(System.in);     //TODO: passar Scanner a una classe InputHelper
         int opcio = 0;
 
         do {
             mostrarMenu();
-            opcio = Integer.parseInt(lector.nextLine());
+            opcio = Integer.parseInt(input.readLine());
 
             switch (opcio) {
                 case 1 -> mostrarMaquina();
                 case 2 -> comprarProducte();
                 case 10 -> mostrarInventari();
-                case 11 -> afegirProductes(lector);
+                case 11 -> afegirProductes();
                 case 12 -> modificarMaquina();
                 case 13 -> mostrarBenefici();
                 case -1 -> System.out.println("Bye...");
@@ -48,12 +48,11 @@ public class Application {
          *      - afegir més ranures a la màquina
          */
 
-        Scanner lector = new Scanner(System.in);
         int opcio = 0;
 
         do {
             mostrarMenuModificacioMaquina();
-            opcio = Integer.parseInt(lector.nextLine());
+            opcio = Integer.parseInt(input.readLine());
 
             switch (opcio) {
                 case 1 -> modificarPosicioProducte();
@@ -90,9 +89,8 @@ public class Application {
 
     /**
      * Mètode per afegir productes a la base de dades
-     * @param lector Scanner
      */
-    private static void afegirProductes(Scanner lector) {
+    private static void afegirProductes() {
 
         /**
          *      Crear un nou producte amb les dades que ens digui l'operari
@@ -106,72 +104,27 @@ public class Application {
          *     Podeu fer-ho amb llenguatge SQL o mirant si el producte existeix i després inserir o actualitzar
          */
         String continuar = null;
-        Producte p;
         do {
-            p = new Producte();
-            System.out.print("Codi: ");
-            String codiProducte = lector.nextLine();
-            if (comprovarSiExisteix(codiProducte)) {
-                System.out.println("El producte ja existeix amb el mateix codi.");
-                System.out.print("Vols actualitzar el producte? (s/n): ");
-                String resposta = lector.nextLine();
-                if (resposta.equalsIgnoreCase("s")) {
-                    // Actualitzar el producte existent
-                } else {
-                    // Descartar l'operació
-                    break;
+            Producte p = input.introduirDadesProducte();
+
+            try {
+                // Demanem de guardar el producte p a la BD
+                producteDAO.createProducte(p);
+                // Agafem tots els productes de la BD i els mostrem (per comprovar que s'ha afegit)
+                ArrayList<Producte> productes = producteDAO.readProductes();
+                for (Producte prod : productes) {
+                    System.out.println(prod);
                 }
-            } else {
-                p.setCodiProducte(codiProducte);
-                System.out.print("Nom: ");
-                p.setNom(lector.nextLine());
-                System.out.print("Descripcio: ");
-                p.setDescripcio(lector.nextLine());
-                System.out.print("Preu Compra: ");
-                p.setPreuCompra(Float.parseFloat(lector.nextLine()));
-                System.out.print("Preu Venta: ");
-                p.setPreuVenta(Float.parseFloat(lector.nextLine()));
-                try {
-                    // Demanem de guardar el producte p a la BD
-                    producteDAO.createProducte(p);
-                    // Agafem tots els productes de la BD i els mostrem (per comprovar que s'ha afegit)
-                    ArrayList<Producte> productes = producteDAO.readProductes();
-                    for (Producte prod : productes) {
-                        System.out.println(prod);
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println(e.getErrorCode());
-                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println(e.getErrorCode());
             }
+
             System.out.print("Vols continuar introduint productes? (s/n): ");
-            continuar = lector.nextLine();
+            continuar = input.readLine();
         } while (continuar.equalsIgnoreCase("s"));
     }
 
-    /**
-     * Mètode per comprovar si el producte existeix o no
-     * @param codiProducte Codi introduit per l'usuari
-     * @return true si el codi existeix i false si el codi no existeix
-     */
-    private static boolean comprovarSiExisteix(String codiProducte) {
-
-        try {
-            // Consultar la base de dades per comprovar si el producte existeix
-            Producte producte = producteDAO.readProducte(codiProducte);
-
-            if (producte != null) {
-                // El producte existeix
-                return true;
-            } else {
-                // El producte no existeix
-                return false;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     /**
      * Mètode per mostrar l'inventari de la màquina expenedora
@@ -192,9 +145,6 @@ public class Application {
 
 
     private static void comprarProducte() throws SQLException {
-        Scanner lector = new Scanner(System.in);
-        //mostrarProductesDisponibles();
-        //Comprovar que hi hagi productes en stock
 
         /**
          * Mínim: es realitza la compra indicant la posició on es troba el producte que es vol comprar
@@ -204,22 +154,9 @@ public class Application {
          * Tingueu en compte que quan s'ha venut un producte HA DE QUEDAR REFLECTIT a la BD que n'hi ha un menys.
          * (stock de la màquina es manté guardat entre reinicis del programa)
          */
-        System.out.println("Introdueix la posició del producte:");
-        int posicio = lector.nextInt();
-        Slot  slot = slotDao.readSlots(posicio);
-        if (slot == null){
-            System.out.println("Aquest slot no existeix");
-            return;
-        }
-
-        if (slot.getQuantitat() < 1){
-            System.out.println("No hi ha stock.");
-            return;
-        }
-        slot.setQuantitat(slot.getQuantitat() - 1);
-        slotDao.updateSlot(slot);
+        mostrarMaquina();
+        input.seleccionarProducte();
     }
-
 
 
     /**

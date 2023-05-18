@@ -11,7 +11,7 @@ public class slotDAO_MySQL implements slotDAO{
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_ROUTE = "jdbc:mysql://localhost:3306/expenedora";
     private static final String DB_USER = "root";
-    private static final String DB_PWD = "7304";
+    private static final String DB_PWD = "1234";
     private Connection conn = null;
 
     public slotDAO_MySQL()
@@ -39,7 +39,18 @@ public class slotDAO_MySQL implements slotDAO{
 
     @Override
     public Slot readSlots(int posicio) throws SQLException {
-        return null;
+        Slot s = new Slot();
+        PreparedStatement ps = conn.prepareStatement("select * from slot where posicio = ?");
+        ps.setInt(1, posicio);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            s.setPosicio(rs.getInt(1));
+            s.setQuantitat(rs.getInt(2));
+            s.setCodi_producte(rs.getString(3));
+        }
+
+        return s;
     }
 
     @Override
@@ -76,5 +87,20 @@ public class slotDAO_MySQL implements slotDAO{
     @Override
     public void deleteSlot(int posicio) throws SQLException {
 
+    }
+
+    @Override
+    public void modificarQuantitatProducte(String nom) throws SQLException {
+        PreparedStatement quantitatProducte = conn.prepareStatement("select quantitat from slot where codi_producte = ? ");
+        quantitatProducte.setString(1, nom);
+        ResultSet rs = quantitatProducte.executeQuery();
+        rs.next();
+
+        String quantitat = rs.getString(1);
+        if(!quantitat.equals("0")){
+            quantitatProducte = conn.prepareStatement("UPDATE slot set quantitat = quantitat - 1 where codi_producte = ?");
+            quantitatProducte.setString(1, nom);
+            quantitatProducte.executeQuery();
+        }
     }
 }

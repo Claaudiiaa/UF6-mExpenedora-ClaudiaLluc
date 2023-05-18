@@ -100,7 +100,7 @@ public class Application {
          *
          *     Podeu fer-ho amb llenguatge SQL o mirant si el producte existeix i després inserir o actualitzar
          */
-            String continuar = null;
+         /*   String continuar = null;
             Producte p;
             do {
                 p = new Producte();
@@ -141,7 +141,7 @@ public class Application {
                 System.out.print("Vols continuar introduint productes? (s/n): ");
                 continuar = lector.nextLine();
             } while (continuar.equalsIgnoreCase("s"));
-        }
+        */}
     private static boolean comprovarSiExisteix(String codiProducte) {
 
         try {
@@ -161,12 +161,6 @@ public class Application {
         }
     }
 
-<<<<<<< HEAD
-    private static void comprovarSiExisteix(String codiProducte) {
-    }
-=======
->>>>>>> d003c790460968e5e8c4d192778b995baaa7dc06
-
     private static void mostrarInventari() {
 
         try {
@@ -182,7 +176,7 @@ public class Application {
     }
 
     private static void comprarProducte() throws SQLException {
-        mostrarMaquina();
+        //mostrarProductesDisponibles();
         //Comprovar que hi hagi productes en stock
 
         /**
@@ -194,6 +188,25 @@ public class Application {
          * (stock de la màquina es manté guardat entre reinicis del programa)
          */
 
+    }
+
+    private static void mostrarProductesDisponibles(Scanner lector) throws SQLException {
+        /*int posicio = Integer.parseInt(lector.nextLine());
+        ArrayList<Slot> llistaSlots = slotDao.readSlot();
+        ArrayList<Producte> llistaProductes = producteDAO.readProductes();
+        System.out.print("""
+                Posicio      Producte                Quantitat disponible
+                ===========================================================
+                """);
+        for (Slot s : llistaSlots){
+            System.out.printf("%-13s", s.getPosicio());
+            for (Producte p :llistaProductes){
+                if(p.getCodiProducte().equals(s.getCodi_producte())){
+                    System.out.printf("%-25s", p.getNom());
+                }
+            }
+            System.out.printf("%d\n", s.getQuantitat());
+        }*/
     }
 
     /**

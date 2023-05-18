@@ -161,12 +161,6 @@ public class Application {
         }
     }
 
-<<<<<<< HEAD
-    private static void comprovarSiExisteix(String codiProducte) {
-    }
-=======
->>>>>>> d003c790460968e5e8c4d192778b995baaa7dc06
-
     private static void mostrarInventari() {
 
         try {

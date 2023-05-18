@@ -4,7 +4,6 @@ import model.Producte;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ProducteDAO_MySQL implements ProducteDAO {
 
@@ -43,7 +42,7 @@ public class ProducteDAO_MySQL implements ProducteDAO {
     }
 
     @Override
-    public Producte readProducte() throws SQLException {
+    public Producte readProducte(String codiProducte) throws SQLException {
         return null;
     }
 

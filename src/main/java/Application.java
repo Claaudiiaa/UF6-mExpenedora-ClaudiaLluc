@@ -100,7 +100,7 @@ public class Application {
          *
          *     Podeu fer-ho amb llenguatge SQL o mirant si el producte existeix i després inserir o actualitzar
          */
-            String continuar = null;
+         /*   String continuar = null;
             Producte p;
             do {
                 p = new Producte();
@@ -141,7 +141,7 @@ public class Application {
                 System.out.print("Vols continuar introduint productes? (s/n): ");
                 continuar = lector.nextLine();
             } while (continuar.equalsIgnoreCase("s"));
-        }
+        */}
     private static boolean comprovarSiExisteix(String codiProducte) {
 
         try {
@@ -176,7 +176,8 @@ public class Application {
     }
 
     private static void comprarProducte() throws SQLException {
-        mostrarMaquina();
+        Scanner lector = new Scanner(System.in);
+        //mostrarProductesDisponibles();
         //Comprovar que hi hagi productes en stock
 
         /**
@@ -187,7 +188,39 @@ public class Application {
          * Tingueu en compte que quan s'ha venut un producte HA DE QUEDAR REFLECTIT a la BD que n'hi ha un menys.
          * (stock de la màquina es manté guardat entre reinicis del programa)
          */
+        System.out.println("Introdueix la posició del producte:");
+        int posicio = lector.nextInt();
+        Slot  slot = slotDao.readSlots(posicio);
+        if (slot == null){
+            System.out.println("Aquest slot no existeix");
+            return;
+        }
 
+        if (slot.getQuantitat() < 1){
+            System.out.println("No hi ha stock.");
+            return;
+        }
+        slot.setQuantitat(slot.getQuantitat() - 1);
+        slotDao.updateSlot(slot);
+    }
+
+    private static void mostrarProductesDisponibles(Scanner lector) throws SQLException {
+        /*int posicio = Integer.parseInt(lector.nextLine());
+        ArrayList<Slot> llistaSlots = slotDao.readSlot();
+        ArrayList<Producte> llistaProductes = producteDAO.readProductes();
+        System.out.print("""
+                Posicio      Producte                Quantitat disponible
+                ===========================================================
+                """);
+        for (Slot s : llistaSlots){
+            System.out.printf("%-13s", s.getPosicio());
+            for (Producte p :llistaProductes){
+                if(p.getCodiProducte().equals(s.getCodi_producte())){
+                    System.out.printf("%-25s", p.getNom());
+                }
+            }
+            System.out.printf("%d\n", s.getQuantitat());
+        }*/
     }
 
     /**

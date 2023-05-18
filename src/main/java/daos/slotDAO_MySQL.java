@@ -36,11 +36,11 @@ public class slotDAO_MySQL implements slotDAO{
         ps.setString(3,s.getCodi_producte());
         int rowCount = ps.executeUpdate();
     }
-/*
+
     @Override
-    public Slot readSlot() throws SQLException {
+    public Slot readSlots(int posicio) throws SQLException {
         return null;
-    }*/
+    }
 
     @Override
     public ArrayList<Slot> readSlot() throws SQLException {

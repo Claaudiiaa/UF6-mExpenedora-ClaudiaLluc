@@ -11,7 +11,7 @@ public class slotDAO_MySQL implements slotDAO{
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_ROUTE = "jdbc:mysql://localhost:3306/expenedora";
     private static final String DB_USER = "root";
-    private static final String DB_PWD = "7304";
+    private static final String DB_PWD = "1234";
     private Connection conn = null;
 
     /**
@@ -89,6 +89,21 @@ public class slotDAO_MySQL implements slotDAO{
         }
 
         return llistaSlots;
+    }
+
+    @Override
+    public void updateSlot(Slot s) throws SQLException {
+
+    }
+
+    @Override
+    public void deleteSlot(Slot s) throws SQLException {
+
+    }
+
+    @Override
+    public void deleteSlot(int posicio) throws SQLException {
+
     }
 
     /**

@@ -80,9 +80,9 @@ public class inputHelper {
      * @throws SQLException
      */
     public void afegirRanures() throws SQLException {
-        System.out.print("Introdueix la posició del producte que vols modificar l'estoc: ");
+        System.out.print("Introdueix la posició del producte: ");
         int posicio = Integer.parseInt(lector.nextLine());
-        System.out.print("Introdueix el nom del producte: ");
+        System.out.print("Introdueix el codi del producte: ");
         String nomProducte = lector.nextLine();
         System.out.print("Introdueix la quantitat d'estoc: ");
         int quantitat = Integer.parseInt(lector.nextLine());

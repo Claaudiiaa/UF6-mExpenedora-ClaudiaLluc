@@ -46,7 +46,7 @@ public class slotDAO_MySQL implements slotDAO{
     }
 
     /**
-     * Mètode per llegir els slots de la maquina
+     * Mètode per llegir els slots de la màquina
      * @param posicio posicio del producte
      * @return retorna l'slot
      * @throws SQLException

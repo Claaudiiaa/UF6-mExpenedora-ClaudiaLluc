@@ -32,7 +32,7 @@ public class ProducteDAO_MySQL implements ProducteDAO {
 
     /**
      * Mètode per crear el producte i inserir-lo a la base de dades
-     * @param p Producte que
+     * @param p Producte que es vol crear
      * @throws SQLException
      */
     @Override
@@ -54,6 +54,11 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         return null;
     }
 
+    /**
+     * Mètode per llegir els productes de la base de dades i afegir-los a un arrayList
+     * @return ArrayList amb els productes guardats
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Producte> readProductes() throws SQLException {
         ArrayList<Producte> llistaProductes = new ArrayList<Producte>();

@@ -11,10 +11,13 @@ public class ProducteDAO_MySQL implements ProducteDAO {
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_ROUTE = "jdbc:mysql://localhost:3306/expenedora";
     private static final String DB_USER = "root";
-    private static final String DB_PWD = "1234";
+    private static final String DB_PWD = "7304";
 
     private Connection conn = null;
 
+    /**
+     * Mètode per establir la connexio amb la base de dades
+     */
     public ProducteDAO_MySQL()
     {
         try {
@@ -27,6 +30,11 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         }
     }
 
+    /**
+     * Mètode per crear el producte i inserir-lo a la base de dades
+     * @param p Producte que
+     * @throws SQLException
+     */
     @Override
     public void createProducte(Producte p) throws SQLException {
 

@@ -11,9 +11,12 @@ public class slotDAO_MySQL implements slotDAO{
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_ROUTE = "jdbc:mysql://localhost:3306/expenedora";
     private static final String DB_USER = "root";
-    private static final String DB_PWD = "1234";
+    private static final String DB_PWD = "7304";
     private Connection conn = null;
 
+    /**
+     * Mètode per establir la connexio amb la base de dades
+     */
     public slotDAO_MySQL()
     {
         try {
@@ -26,6 +29,11 @@ public class slotDAO_MySQL implements slotDAO{
         }
     }
 
+    /**
+     * Mètode per crear un slot i inserir-lo a la base de dades
+     * @param s
+     * @throws SQLException
+     */
     @Override
     public void createSlot(Slot s) throws SQLException {
 
@@ -37,6 +45,12 @@ public class slotDAO_MySQL implements slotDAO{
         int rowCount = ps.executeUpdate();
     }
 
+    /**
+     * Mètode per llegir els slots de la maquina
+     * @param posicio posicio del producte
+     * @return retorna l'slot
+     * @throws SQLException
+     */
     @Override
     public Slot readSlots(int posicio) throws SQLException {
         Slot s = new Slot();
@@ -53,6 +67,11 @@ public class slotDAO_MySQL implements slotDAO{
         return s;
     }
 
+    /**
+     * Mètode per llegir els slots de la taula i afegir-los a un arrayList
+     * @return retorna arraylist amb els slots
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Slot> readSlot() throws SQLException {
         ArrayList<Slot> llistaSlots = new ArrayList<Slot>();
@@ -72,35 +91,69 @@ public class slotDAO_MySQL implements slotDAO{
         return llistaSlots;
     }
 
-
-
+    /**
+     * Mètode per modificar la quantitat dels productes i calcular el benefici de la màquina
+     * @param nom nom del producte
+     * @return float amb el benefici
+     * @throws SQLException
+     */
     @Override
-    public void updateSlot(Slot s) throws SQLException {
-
-    }
-
-    @Override
-    public void deleteSlot(Slot s) throws SQLException {
-
-    }
-
-    @Override
-    public void deleteSlot(int posicio) throws SQLException {
-
-    }
-
-    @Override
-    public void modificarQuantitatProducte(String nom) throws SQLException {
-        PreparedStatement quantitatProducte = conn.prepareStatement("select quantitat from slot where codi_producte = ? ");
+    public float modificarQuantitatProducte(String nom) throws SQLException {
+        PreparedStatement quantitatProducte = conn.prepareStatement("select quantitat from slot, producte where nom = ? ");
         quantitatProducte.setString(1, nom);
         ResultSet rs = quantitatProducte.executeQuery();
         rs.next();
 
         String quantitat = rs.getString(1);
         if(!quantitat.equals("0")){
-            quantitatProducte = conn.prepareStatement("UPDATE slot set quantitat = quantitat - 1 where codi_producte = ?");
+            quantitatProducte = conn.prepareStatement("UPDATE slot set quantitat = quantitat-1 where codi_producte = (Select codi_producte from producte where nom = ?)");
             quantitatProducte.setString(1, nom);
-            quantitatProducte.executeQuery();
+            quantitatProducte.executeUpdate();
         }
+        float benefici = 0;
+        quantitatProducte = conn.prepareStatement("Select preu_venta - preu_copmra as benefici from producte where nom = ?");
+        quantitatProducte.setString(1, nom);
+        rs = quantitatProducte.executeQuery();
+
+        if (rs.next()){
+            benefici = rs.getFloat("benefici");
+        }
+        return benefici;
+    }
+
+    /**
+     * Mètode per modificar la posicio d'un producte
+     * @param posicioActual posicio actual del producte
+     * @param novaPosicio nova posicio del producte
+     * @throws SQLException
+     */
+    public void modificarPosicio(int posicioActual, int novaPosicio) throws SQLException {
+        PreparedStatement posicio = conn.prepareStatement("Select posicio from slot where posicio = ?");
+        posicio.setInt(1, posicioActual);
+        ResultSet rs = posicio.executeQuery();
+        rs.next();
+
+        posicio = conn.prepareStatement("update slot set posicio = ? where posicio = ?");
+        posicio.setInt(1, novaPosicio);
+        posicio.setInt(2, posicioActual);
+        posicio.executeUpdate();
+    }
+
+    /**
+     * Mètode per modificar l'estoc del producte
+     * @param posicio posicio del producte que volem modificar l'estoc
+     * @param quantitatStock quantitat d'estoc que li volem posar
+     * @throws SQLException
+     */
+    public void modificarStockProducte(int posicio, int quantitatStock) throws SQLException {
+        PreparedStatement posicioProducte = conn.prepareStatement("Select posicio from slot where posicio = ?");
+        posicioProducte.setInt(1, posicio);
+        ResultSet rs = posicioProducte.executeQuery();
+        rs.next();
+
+        posicioProducte = conn.prepareStatement("update slot set quantitat = ? where posicio = ?");
+        posicioProducte.setInt(1, quantitatStock);
+        posicioProducte.setInt(2, posicio);
+        posicioProducte.executeUpdate();
     }
 }

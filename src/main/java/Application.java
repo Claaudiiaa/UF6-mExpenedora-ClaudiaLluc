@@ -40,7 +40,11 @@ public class Application {
 
     }
 
-    private static void modificarMaquina() {
+    /**
+     * Mètode amb switch per modificar la màquina
+     * @throws SQLException
+     */
+    private static void modificarMaquina() throws SQLException {
         /**
          * Ha de permetre:
          *      - modificar les posicions on hi ha els productes de la màquina (quin article va a cada lloc)
@@ -48,7 +52,7 @@ public class Application {
          *      - afegir més ranures a la màquina
          */
 
-        int opcio = 0;
+        int opcio;
 
         do {
             mostrarMenuModificacioMaquina();
@@ -64,6 +68,9 @@ public class Application {
         } while (opcio != 0);
     }
 
+    /**
+     * Mètode que mostra el menu per modificar la màquina
+     */
     private static void mostrarMenuModificacioMaquina() {
         System.out.print("""
                 Menú de modificació de la màquina
@@ -75,22 +82,34 @@ public class Application {
                 """);
     }
 
-    private static void modificarPosicioProducte() {
-
+    /**
+     * Mètode per modificar la posicio dels productes
+     * @throws SQLException
+     */
+    private static void modificarPosicioProducte() throws SQLException {
+        input.seleccionaPosicioModificar();
     }
 
-    private static void modificarStockProducte() {
-
+    /**
+     * Mètode per modificar l'estoc de la màquina
+     * @throws SQLException
+     */
+    private static void modificarStockProducte() throws SQLException {
+        input.modificarStock();
     }
 
-    private static void afegirRanures() {
-
+    /**
+     * Mètode per afegir noves ranures a la màquina
+     * @throws SQLException
+     */
+    private static void afegirRanures() throws SQLException {
+        input.afegirRanures();
     }
 
     /**
      * Mètode per afegir productes a la base de dades
      */
-    private static void afegirProductes() {
+    private static void afegirProductes() throws SQLException {
 
         /**
          *      Crear un nou producte amb les dades que ens digui l'operari
@@ -103,7 +122,7 @@ public class Application {
          *
          *     Podeu fer-ho amb llenguatge SQL o mirant si el producte existeix i després inserir o actualitzar
          */
-        String continuar = null;
+        String continuar;
         do {
             Producte p = input.introduirDadesProducte();
 
@@ -116,13 +135,33 @@ public class Application {
                     System.out.println(prod);
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println(e.getErrorCode());
+                if (e.getErrorCode() == 1062){
+                    modificarProducteExistent(p);
+                }else {
+                    e.printStackTrace();
+                    System.out.println(e.getErrorCode());
+                }
             }
 
             System.out.print("Vols continuar introduint productes? (s/n): ");
             continuar = input.readLine();
         } while (continuar.equalsIgnoreCase("s"));
+    }
+
+    /**
+     * Mètode per modificar el codi del producte si ja existeix
+     * @param p Producte que li actualitzarem el codi
+     * @throws SQLException
+     */
+    private static void modificarProducteExistent(Producte p) throws SQLException {
+        System.out.print("El producte ja existeix, vols modificar el codi? (s/n)");
+        String modificar = input.readLine();
+        if(modificar.equalsIgnoreCase("s")){
+            System.out.print("Introdueix el nou codi: ");
+            String codi = input.readLine();
+            p.setCodiProducte(codi);
+            producteDAO.createProducte(p);
+        }
     }
 
 
@@ -143,7 +182,11 @@ public class Application {
         }
     }
 
-
+    /**
+     * Mètode per comprar els productes, un cop s'introdueix el nom d'un producte
+     * es resta 1 unitat a la quantitat del producte.
+     * @throws SQLException
+     */
     private static void comprarProducte() throws SQLException {
 
         /**
@@ -206,8 +249,11 @@ public class Application {
         System.out.println("[-1] Sortir de l'aplicació");
     }
 
+    /**
+     * Mètode per mostrar el benefici de la màquina
+     */
     private static void mostrarBenefici() {
-
+        System.out.printf("El benefici de la màquina és %3f", inputHelper.benefici);
         /** Ha de mostrar el benefici de la sessió actual de la màquina, cada producte té un cost de compra
          * i un preu de venda. La suma d'aquesta diferència de tots productes que s'han venut ens donaran el benefici.
          *
